@@ -95,8 +95,8 @@ Arguments for 'send':
     -a <path to attachment>
 
 Examples:
-    python bulksender.py send -e template.csv -m template_message.json -a cv.pdf
-    python bulksender.py login abcd@gmail.com
+    python bulksend.py send -e template.csv -m template_message.json -a cv.pdf
+    python bulksend.py login abcd@gmail.com
 
 
 ```

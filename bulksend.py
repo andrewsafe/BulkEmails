@@ -15,6 +15,8 @@ import json
 load_dotenv()
 sender_email = os.getenv("SENDER_EMAIL")
 sender_password = os.getenv("SENDER_PASSWORD")
+print("SENDER_EMAIL:", os.getenv("SENDER_EMAIL")) #testing
+print("SENDER_PASSWORD:", os.getenv("SENDER_PASSWORD")) #testing
 smtp_server = "smtp.gmail.com"
 port = 465
 
@@ -22,13 +24,12 @@ def print_help():
     print(
 
     """
-  _   _  _____ _____   _____ _______ _____    __  __       _ _ 
- | \ | |/ ____|  __ \ / ____|__   __|  __ \  |  \/  |     (_) |
- |  \| | (___ | |__) | |  __   | |  | |__) | | \  / | __ _ _| |
- | . ` |\___ \|  _  /| | |_ |  | |  |  _  /  | |\/| |/ _` | | |
- | |\  |____) | | \ \| |__| |  | |  | | \ \  | |  | | (_| | | |
- |_| \_|_____/|_|  \_\\_____|  |_|  |_|  \_\ |_|  |_|\__,_|_|_|
-                                                               
+   _____ _                      _____       _  __
+  / ____| |                    / ____|     (_)/ _|
+ | (___ | |__   __ _ _ __ ___ | (___   __ _ _| |_
+  \___ \| '_ \ / _` | '_ ` _ \ \___ \ / _` | |  _|
+  ____) | | | | (_| | | | | | |____) | (_| | | |
+ |_____/|_| |_|\__,_|_| |_| |_|_____/ \__,_|_|_|
                                                                          
     """
 
@@ -36,7 +37,7 @@ def print_help():
     print("""Welcome to the Email Sender App!
 
 Usage:
-    python bulksender.py [command] <arguments>
+    python bulksend.py [command] <arguments>
 
 Commands:
     send    - Execute the send function of the app.
@@ -48,8 +49,8 @@ Arguments for 'send':
     -a <path to attachment>
 
 Examples:
-    python bulksender.py send -e template.csv -m template_message.json -a cv.pdf
-    python bulksender.py login abcd@gmail.com
+    python bulksend.py send -e template.csv -m tempMessage.json -a cv.pdf
+    python bulksend.py login abcd@gmail.com
 """)
 
 def count_lines(file):
