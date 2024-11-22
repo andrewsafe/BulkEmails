@@ -14,6 +14,7 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app, origin=["http://localhost:3000"])
 socketio = SocketIO(app, cors_allowed_origins="http://localhost:3000")
+
 # app = Flask(__name__)
 # app.config['SECRET_KEY'] = 'your_secret_key'
 # socketio = SocketIO(app, cors_allowed_origins="*")
