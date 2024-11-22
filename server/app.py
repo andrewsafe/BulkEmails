@@ -77,6 +77,9 @@ def handle_send(data):
         with open(csv_filename, 'r') as f:
             reader = csv.reader(f)
             for row in reader:
+                # Skip empty rows
+                if not row or len(row) < 1 or not row[0].strip():
+                    continue
                 recipient_email = row[0].strip()
                 send_email(recipient_email, subject, body, attachment)
         emit('send_response', {'message': 'Emails sent successfully'})
