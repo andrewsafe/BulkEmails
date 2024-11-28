@@ -1,3 +1,6 @@
+import eventlet
+eventlet.monkey_patch()
+
 import os
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -14,12 +17,16 @@ from flask_cors import CORS
 app = Flask(__name__)
 # CORS(app, origin=["http://localhost:3000"])
 # socketio = SocketIO(app, cors_allowed_origins="http://localhost:3000")
-CORS(app, origins=["https://undermsrp.netlify.app"])
-socketio = SocketIO(app, cors_allowed_origins="https://undermsrp.netlify.app")
+CORS(app, origins=["https://undermsrp.netlify.app", "https://6748e0abd233b70008d6969f--undermsrp.netlify.app/"])
+socketio = SocketIO(app, cors_allowed_origins=["https://undermsrp.netlify.app", "https://6748e0abd233b70008d6969f--undermsrp.netlify.app/"])
 
 # app = Flask(__name__)
 # app.config['SECRET_KEY'] = 'your_secret_key'
 # socketio = SocketIO(app, cors_allowed_origins="*")
+
+@app.route("/")
+def index():
+    return "Backend is running we live bruh!", 200
 
 load_dotenv()
 sender_email = os.getenv("SENDER_EMAIL")
