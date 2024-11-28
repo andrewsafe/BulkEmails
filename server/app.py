@@ -34,66 +34,82 @@ sender_password = os.getenv("SENDER_PASSWORD")
 smtp_server = "smtp.gmail.com"
 port = 465
 
-def send_email(recipient_email, subject, body, filename):
-    message = MIMEMultipart()
-    message["From"] = sender_email
-    message["To"] = recipient_email
-    message["Subject"] = subject
-    message.attach(MIMEText(body, "plain"))
+def send_email(sender_email, sender_password, recipient_email, subject, body, filename=None):
+    """Send an email using dynamic credentials."""
+    try:
+        message = MIMEMultipart()
+        message["From"] = sender_email
+        message["To"] = recipient_email
+        message["Subject"] = subject
+        message.attach(MIMEText(body, "plain"))
 
-    if filename:
-        with open(filename, "rb") as attachment:
-            part = MIMEBase("application", "octet-stream")
-            part.set_payload(attachment.read())
-            encoders.encode_base64(part)
-            part.add_header("Content-Disposition", f"attachment; filename={os.path.basename(filename)}")
-            message.attach(part)
+        if filename:
+            with open(filename, "rb") as attachment:
+                part = MIMEBase("application", "octet-stream")
+                part.set_payload(attachment.read())
+                encoders.encode_base64(part)
+                part.add_header(
+                    "Content-Disposition", 
+                    f"attachment; filename={os.path.basename(filename)}"
+                )
+                message.attach(part)
 
-    with smtplib.SMTP_SSL(smtp_server, port) as server:
-        server.login(sender_email, sender_password)
-        server.sendmail(sender_email, recipient_email, message.as_string())
+        # Connect to SMTP server and send email
+        with smtplib.SMTP_SSL(smtp_server, port) as server:
+            server.login(sender_email, sender_password)
+            server.sendmail(sender_email, recipient_email, message.as_string())
+    except smtplib.SMTPAuthenticationError:
+        raise Exception("SMTP authentication failed. Check your credentials.")
+    except Exception as e:
+        raise Exception(f"Failed to send email: {e}")
+
 
 @socketio.on('login')
 def handle_login(data):
-    email = data['email']
-    password = data['password']
-    with open(".env", "w") as file:
-        file.write(f"SENDER_EMAIL={email}\nSENDER_PASSWORD={password}\n")
-    emit('login_response', {'message': 'Login successful'})
+    """Validate user login credentials."""
+    email = data.get('email')
+    password = data.get('password')
+
+    if not email or not password:
+        emit('login_response', {'message': 'Email and password are required.'})
+        return
+
+    # Validate credentials via a dummy SMTP login
+    try:
+        with smtplib.SMTP_SSL(smtp_server, port) as server:
+            server.login(email, password)  # Attempt login with provided credentials
+        emit('login_response', {'message': 'Login successful'})  # Notify frontend
+    except smtplib.SMTPAuthenticationError:
+        emit('login_response', {'message': 'Login failed. Check your credentials.'})
+    except Exception as e:
+        emit('login_response', {'message': f'Error occurred: {str(e)}'})
+
 
 @socketio.on('send_emails')
 def handle_send(data):
+    """Handle sending bulk emails with dynamic credentials."""
     emails_csv = data.get('emails')
     subject = data.get('subject')
     body = data.get('body')
     attachment = data.get('attachment')
+    sender_email = data.get('sender_email')
+    sender_password = data.get('sender_password')
 
-    if not emails_csv or not subject or not body:
+    if not emails_csv or not subject or not body or not sender_email or not sender_password:
         emit('send_response', {'message': 'Missing required fields: emails, subject, or body.'})
         return
 
-    # Decode emails_csv if it's bytes
-    if isinstance(emails_csv, bytes):
-        emails_csv = emails_csv.decode('utf-8')
-
-    # Save the CSV file temporarily
-    csv_filename = 'emails.csv'
-    with open(csv_filename, 'w') as f:
-        f.write(emails_csv)
-
-    # Process each email in the CSV and send
+    # Decode CSV content and process emails
     try:
-        with open(csv_filename, 'r') as f:
-            reader = csv.reader(f)
-            for row in reader:
-                # Skip empty rows
-                if not row or len(row) < 1 or not row[0].strip():
-                    continue
-                recipient_email = row[0].strip()
-                send_email(recipient_email, subject, body, attachment)
+        email_list = emails_csv.splitlines()  # Split CSV into individual lines
+        for recipient_email in email_list:
+            recipient_email = recipient_email.strip()  # Clean up whitespace
+            if recipient_email:  # Skip empty lines
+                send_email(sender_email, sender_password, recipient_email, subject, body, attachment)
         emit('send_response', {'message': 'Emails sent successfully'})
     except Exception as e:
         emit('send_response', {'message': f'Error occurred: {str(e)}'})
+
 
 if __name__ == '__main__':
     # socketio.run(app, debug=True)
