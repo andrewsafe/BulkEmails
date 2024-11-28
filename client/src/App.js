@@ -4,7 +4,10 @@ import "./App.css";
 import LoginScreen from "./LoginScreen";
 import SendScreen from "./SendScreen";
 
-const socket = io("http://127.0.0.1:5000", {
+// const socket = io("http://127.0.0.1:5000", {
+//   transports: ["websocket", "polling"],
+// });
+const socket = io("https://undermsrp.netlify.app/", {
   transports: ["websocket", "polling"],
 });
 
