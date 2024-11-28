@@ -14,8 +14,8 @@ from flask_cors import CORS
 app = Flask(__name__)
 # CORS(app, origin=["http://localhost:3000"])
 # socketio = SocketIO(app, cors_allowed_origins="http://localhost:3000")
-CORS(app, origins=["https://undermsrp.netlify.app/"])
-socketio = SocketIO(app, cors_allowed_origins="https://undermsrp.netlify.app/")
+CORS(app, origins=["https://undermsrp.netlify.app"])
+socketio = SocketIO(app, cors_allowed_origins="https://undermsrp.netlify.app")
 
 # app = Flask(__name__)
 # app.config['SECRET_KEY'] = 'your_secret_key'
