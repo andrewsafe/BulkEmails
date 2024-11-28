@@ -4,7 +4,7 @@ import "./App.css";
 import LoginScreen from "./LoginScreen";
 import SendScreen from "./SendScreen";
 
-const socket = io("http://localhost:5000", {
+const socket = io("https://bulkemails-xkmq.onrender.com/", {
   transports: ["websocket", "polling"],
 });
 // const socket = io("backendurl", {
