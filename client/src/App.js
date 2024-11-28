@@ -7,7 +7,7 @@ import SendScreen from "./SendScreen";
 const socket = io("https://bulkemails-xkmq.onrender.com/", {
   transports: ["websocket", "polling"],
 });
-// const socket = io("backendurl", {
+// const socket = io("http://localhost:5000", {
 //   transports: ["websocket", "polling"],
 // });
 
