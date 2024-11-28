@@ -4,12 +4,12 @@ import "./App.css";
 import LoginScreen from "./LoginScreen";
 import SendScreen from "./SendScreen";
 
-// const socket = io("http://127.0.0.1:5000", {
-//   transports: ["websocket", "polling"],
-// });
-const socket = io("https://undermsrp.netlify.app/", {
+const socket = io("http://localhost:5000", {
   transports: ["websocket", "polling"],
 });
+// const socket = io("backendurl", {
+//   transports: ["websocket", "polling"],
+// });
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false); // Track login status
