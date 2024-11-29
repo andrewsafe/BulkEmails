@@ -16,7 +16,6 @@ Technologies Used
 Frontend:
 
 	•	React: UI framework.
-	•	React Hot Toast: For notifications.
 	•	CSS: Styling for the application.
 
 Backend:
