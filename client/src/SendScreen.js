@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const SendScreen = ({ socket, onSendResponse }) => {
+const SendScreen = ({ socket, onSendResponse, credentials }) => {
   const [files, setFiles] = useState({ emails: null });
   const [emailData, setEmailData] = useState({
     subject: "",
@@ -21,6 +21,8 @@ const SendScreen = ({ socket, onSendResponse }) => {
         emails: emailFileContent,
         subject: emailData.subject,
         body: emailData.body,
+        sender_email: credentials.email, // Use credentials passed from App.js
+        sender_password: credentials.password, // Use credentials passed from App.js
         attachment: null,
       });
 

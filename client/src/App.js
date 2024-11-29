@@ -13,13 +13,14 @@ const socket = io("https://bulkemails-xkmq.onrender.com/", {
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false); // Track login status
+  const [credentials, setCredentials] = useState({ email: "", password: "" }); // Store credentials
   const [response, setResponse] = useState("");
 
-  const handleLoginResponse = (message) => {
+  const handleLoginResponse = (message, loginData) => {
     setResponse(message);
     if (message === "Login successful") {
-      // Adjust this based on your backend response
-      setIsLoggedIn(true); // Navigate to the SendScreen
+      setIsLoggedIn(true); // Navigate to SendScreen
+      setCredentials(loginData); // Save user credentials
     } else {
       alert("Login failed. Please check your credentials."); // Optional error handling
     }
@@ -34,7 +35,11 @@ function App() {
         <LoginScreen socket={socket} onLoginResponse={handleLoginResponse} />
       ) : (
         // Show SendScreen if logged in
-        <SendScreen socket={socket} onSendResponse={setResponse} />
+        <SendScreen
+          socket={socket}
+          onSendResponse={setResponse}
+          credentials={credentials} // Pass credentials to SendScreen
+        />
       )}
 
       {response && <p>{response}</p>}
