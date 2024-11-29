@@ -1,4 +1,4 @@
-Bulk Email Sender Application
+Under MSRP Bulk Email Sender Application
 
 This application allows users to send bulk emails conveniently through a user-friendly web interface. It features a React-based frontend and a Flask-based backend, with real-time communication facilitated by Socket.IO. The app supports secure login via SMTP credentials and dynamic email sending.
 
