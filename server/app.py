@@ -15,10 +15,10 @@ from flask import Flask, request
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app, origin=["http://localhost:3000"])
-socketio = SocketIO(app, cors_allowed_origins="http://localhost:3000")
-# CORS(app, origins=["https://undermsrp.netlify.app", "https://6748e0abd233b70008d6969f--undermsrp.netlify.app/"])
-# socketio = SocketIO(app, cors_allowed_origins=["https://undermsrp.netlify.app", "https://6748e0abd233b70008d6969f--undermsrp.netlify.app/"])
+# CORS(app, origin=["http://localhost:3000"])
+# socketio = SocketIO(app, cors_allowed_origins="http://localhost:3000")
+CORS(app, origins=["https://undermsrp.netlify.app", "https://6748e0abd233b70008d6969f--undermsrp.netlify.app/"])
+socketio = SocketIO(app, cors_allowed_origins=["https://undermsrp.netlify.app", "https://6748e0abd233b70008d6969f--undermsrp.netlify.app/"])
 
 # app = Flask(__name__)
 # app.config['SECRET_KEY'] = 'your_secret_key'
@@ -121,7 +121,7 @@ def handle_send(data):
 
 
 if __name__ == '__main__':
-    socketio.run(app, debug=True)
-    # port = int(os.environ.get("PORT", 5000))
-    # socketio.run(app, host="0.0.0.0", port=port, debug=True)
+    # socketio.run(app, debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    socketio.run(app, host="0.0.0.0", port=port, debug=True)
 

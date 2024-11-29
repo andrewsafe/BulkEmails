@@ -44,7 +44,6 @@ function App() {
 
       {response && (
         <div>
-          <p>Response:</p>
           <pre style={{ fontFamily: "monospace", whiteSpace: "pre-wrap" }}>
             {response}
           </pre>
