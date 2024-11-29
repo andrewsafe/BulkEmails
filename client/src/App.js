@@ -42,7 +42,14 @@ function App() {
         />
       )}
 
-      {response && <p>{response}</p>}
+      {response && (
+        <div>
+          <p>Response:</p>
+          <pre style={{ fontFamily: "monospace", whiteSpace: "pre-wrap" }}>
+            {response}
+          </pre>
+        </div>
+      )}
     </div>
   );
 }
