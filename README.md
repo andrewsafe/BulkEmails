@@ -1,116 +1,179 @@
-# Bulk Email Sender App 📨
+Bulk Email Sender Application
 
-Welcome to the Bulk Email Sender App! This Python script is crafted to streamline the process of sending bulk emails directly from your command line. Whether you're distributing newsletters, job applications, event invitations, or any bulk email, this app simplifies the process, allowing you to send personalized emails efficiently to a list of recipients. It supports attachments and ensures secure login credentials handling through environment variables.
+This application allows users to send bulk emails conveniently through a user-friendly web interface. It features a React-based frontend and a Flask-based backend, with real-time communication facilitated by Socket.IO. The app supports secure login via SMTP credentials and dynamic email sending.
 
-```bash
+Features
 
-    """
-   _____                       __  __       _ _
-  / ____|                     |  \/  |     (_) |
- | (___  _   _ _ __   ___ _ __| \  / | __ _ _| |
-  \___ \| | | | '_ \ / _ \ '__| |\/| |/ _` | | |
-  ____) | |_| | |_) |  __/ |  | |  | | (_| | | |
- |_____/ \__,_| .__/ \___|_|  |_|  |_|\__,_|_|_|
-              | |
-              |_|
-    """
+	•	User Login: Secure login with email and app password (SMTP credentials).
+	•	Bulk Email Sending: Upload a CSV of recipient emails, compose a subject and body, and send.
+	•	Real-Time Notifications: React Hot Toast provides success or error notifications for login and email-sending operations.
+	•	ASCII Art Feedback: Fun ASCII art is displayed on successful email sending.
+	•	Responsive Design: Mobile-friendly layout with modern styling.
+	•	Supports Attachments: Optional email attachment feature.
 
-```
+Technologies Used
 
-## Features 🚀
+Frontend:
 
-- **Bulk Emailing**: Send personalized emails to a list of recipients from a CSV file.
-- **Email Customization**: Personalize the email subject and body via a JSON file.
-- **Attachments**: Attach files to your emails, ideal for documents like resumes or reports.
-- **Secure Credential Handling**: Uses environment variables to securely store email login credentials.
-- **User-Friendly Interface**: Simple command-line interface for easy operation.
+	•	React: UI framework.
+	•	React Hot Toast: For notifications.
+	•	CSS: Styling for the application.
 
-## Prerequisites 📋
+Backend:
 
-Before getting started, ensure you have:
+	•	Flask: Python framework for backend logic.
+	•	Flask-SocketIO: Real-time communication with the frontend.
+	•	SMTP: For email authentication and sending.
+	•	Eventlet: To support WebSocket handling.
 
-- Python 3.x installed on your computer.
-- A `.env` file with your SMTP email credentials (`SENDER_EMAIL` and `SENDER_PASSWORD`).
-- The recipient list in a CSV file named `emails.csv`.
-- Any attachments you wish to send, accessible in the script's directory.
+Prerequisites
 
-## Installation 🛠
+	•	Node.js: For running the React frontend.
+	•	Python 3.x: For the Flask backend.
+	•	SMTP Credentials: A valid email and app-specific password (e.g., Gmail app password).
 
-1. **Clone or Download**: Clone this repository or download the script files to your machine.
-2. **Install Dependencies**: Install the required Python packages:
+Setup Instructions
 
-   ```bash
-   pip install python-dotenv
-   ```
+Backend Setup:
 
-3. **Setup `.env` File**: Create a `.env` file in the script's directory with your email credentials:
+	1.	Clone the repository:
 
-   ```plaintext
-   SENDER_EMAIL=your_email@example.com
-   SENDER_PASSWORD=your_email_password
-   ```
-
-## Usage 📝
-
-1. **Prepare Your CSV**: Format your `emails.csv` with one email address per line for the recipients.
-2. **Customize Message**: Edit the `template_message.json` to match your email's subject and body.
-3. **Set Attachment (Optional)**: Specify the filename of your attachment in the command line.
-
-### Commands
-
-- **Sending Emails**:
-
-  ```bash
-  python bulksender.py send -e template.csv -m template_message.json -a attachment.pdf
-  ```
-
-  This command will process and send emails according to the specified CSV file and message template, attaching the specified file.
-
-- **Login**:
-
-  ```bash
-  python bulksender.py login your_email@example.com
-  ```
-
-  This command securely saves your SMTP credentials for email sending.
-
-## Comand Line Interface 📟
-
-The script provides a user-friendly command-line interface for easy operation. Here's a brief overview of the available commands:
-
-```bash
-
-Welcome to the Email Sender App!
-
-Usage:
-    python bulksender.py [command] <arguments>
-
-Commands:
-    send    - Execute the send function of the app.
-    login   - Perform login operation.
-
-Arguments for 'send':
-    -e <path to email CSV file>
-    -m <path to message JSON file>
-    -a <path to attachment>
-
-Examples:
-    python bulksend.py send -e template.csv -m template_message.json -a cv.pdf
-    python bulksend.py login abcd@gmail.com
+git clone https://github.com/yourusername/BulkEmails.git
+cd BulkEmails/server
 
 
-```
+	2.	Install dependencies:
 
-![alt text](email.gif)
+pip install -r requirements.txt
 
-## Contributing 🤝
 
-Contributions are welcome! Feel free to fork the project, make improvements, and submit pull requests. If you encounter issues or have suggestions, don't hesitate to open an issue on GitHub.
+	3.	Set up environment variables:
+	•	Create a .env file in the server directory:
 
-## Notes and Best Practices 🔒
+SENDER_EMAIL=your_email@example.com
+SENDER_PASSWORD=your_app_password
 
-- Ensure you have permission to email the recipients and comply with anti-spam laws.
-- The script defaults to Gmail's SMTP server; if using another service, adjust the `smtp_server` and `port` accordingly.
-- Be mindful of sending limits imposed by your email service provider to avoid service disruptions.
 
-Happy Emailing! 🎉
+	•	Or dynamically provide these through the UI.
+
+	4.	Run the Flask backend:
+
+python app.py
+
+The backend will be available at http://0.0.0.0:5000.
+
+Frontend Setup:
+
+	1.	Navigate to the frontend directory:
+
+cd BulkEmails/frontend
+
+
+	2.	Install dependencies:
+
+npm install
+
+
+	3.	Start the React frontend:
+
+npm start
+
+The frontend will be available at http://localhost:3000.
+
+Deployment
+
+Deploy Backend on Render:
+
+	1.	Ensure the app.py uses the dynamic PORT variable:
+
+port = int(os.environ.get("PORT", 5000))
+socketio.run(app, host="0.0.0.0", port=port)
+
+
+	2.	Set the Render build command:
+
+pip install -r requirements.txt
+
+
+	3.	Set the Render start command:
+
+gunicorn -k eventlet -w 1 -b 0.0.0.0:$PORT app:app
+
+
+	4.	Deploy the app and note the backend URL.
+
+Deploy Frontend on Netlify:
+
+	1.	Connect the repository to Netlify.
+	2.	Set the backend URL in App.js:
+
+const socket = io("https://your-backend.onrender.com/", {
+  transports: ["websocket", "polling"],
+});
+
+
+	3.	Deploy the app.
+
+Usage
+
+	1.	Navigate to the frontend (e.g., https://yourfrontend.netlify.app).
+	2.	Login: Enter your email and SMTP app password.
+	3.	Upload CSV: Select a CSV file of recipient emails.
+	4.	Compose Email: Add a subject and body.
+	5.	Send: Click the “Send Emails” button. Notifications and ASCII art will confirm success or failure.
+
+File Structure
+
+BulkEmails/
+├── server/           # Flask backend
+│   ├── app.py        # Main Flask application
+│   ├── .env          # Environment variables
+│   ├── requirements.txt # Python dependencies
+│   └── templates/    # Email templates (optional)
+├── client/         # React frontend
+│   ├── src/
+│   │   ├── App.js    # Main React component
+│   │   ├── LoginScreen.js # Login UI
+│   │   ├── SendScreen.js  # Bulk email UI
+│   │   └── App.css   # Styles
+│   └── package.json  # Frontend dependencies
+└── README.md         # Project documentation
+
+Sample ASCII Art Response
+
+On successful email sending, you’ll see this response:
+
+Emails sent successfully
+
+   \____________________/
+   __/ |_____________|  \__
+ /⭕️⭕️______________⭕️⭕️\
+  |___/___GTR-R34___\___|
+ \🔘🔘_|__|__|__|_🔘🔘/
+   |___|            |___|
+
+Contributing
+
+	1.	Fork the repository.
+	2.	Create a new branch:
+
+git checkout -b feature-name
+
+
+	3.	Commit your changes:
+
+git commit -m "Add feature"
+
+
+	4.	Push to your fork:
+
+git push origin feature-name
+
+
+	5.	Create a Pull Request.
+
+License
+
+This project is licensed under the MIT License.
+
+Let me know if you’d like further adjustments or additional details! 🚀
