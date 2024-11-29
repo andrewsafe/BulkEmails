@@ -106,7 +106,16 @@ def handle_send(data):
             recipient_email = recipient_email.strip()
             if recipient_email:
                 send_email(sender_email, sender_password, recipient_email, subject, body, attachment)
-        emit('send_response', {'message': 'Emails sent successfully'})
+        # emit('send_response', {'message': 'Emails sent successfully'})
+        emit('send_response', {
+            'message': 'Emails sent successfully\n\n'
+                       '   \\____________________/\n'
+                       '   __/ |_____________|  \\__\n'
+                       ' /⭕️⭕️______________⭕️⭕️\\\n'
+                       '  |___/___GTR-R34___\\___|\n'
+                       ' \\🔘🔘_|__|__|__|_🔘🔘/\n'
+                       '   |___|            |___|'
+        })
     except Exception as e:
         emit('send_response', {'message': f'Error occurred: {str(e)}'})
 
